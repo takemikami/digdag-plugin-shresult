@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'maven-publish'
+    id 'jacoco'
+    id 'com.github.kt3k.coveralls' version '2.8.2'
+}
+
+group = 'com.github.takemikami'
+version = '0.0.1'
+
+def digdagVersion = '0.9.25'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'https://dl.bintray.com/digdag/maven'
+    }
+}
+
+configurations {
+    provided
+}
+
+dependencies {
+    provided 'io.digdag:digdag-spi:' + digdagVersion
+    provided 'io.digdag:digdag-plugin-utils:' + digdagVersion
+    testCompile 'junit:junit:4.+'
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+        test.compileClasspath += configurations.provided
+        test.runtimeClasspath += configurations.provided
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            // artifactId 'project1-sample'        
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "$buildDir/repo"
+        }
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+javadoc {
+    options {
+        locale = 'en_US'
+        encoding = 'UTF-8'
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}
