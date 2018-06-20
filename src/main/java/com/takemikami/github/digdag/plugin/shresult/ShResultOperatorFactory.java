@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -129,20 +130,7 @@ public class ShResultOperatorFactory implements OperatorFactory {
       ConfigFactory cf = request.getConfig().getFactory();
       Config storeParams = cf.create();
 
-      if ("json-list-map".equals(stdoutFormat)) {
-        // stdout is json format
-        List<Map<String, Object>> jsonObj;
-        try {
-          ObjectMapper mapper = new ObjectMapper();
-          jsonObj = mapper
-              .readValue(stdoutData, new TypeReference<ArrayList<HashMap<String, Object>>>() {
-              });
-        } catch (IOException e) {
-          throw Throwables.propagate(e);
-        }
-
-        storeParams.set(varName, jsonObj);
-      }
+      storeParams.set(varName, createVariableObjectFromStdout(stdoutData, stdoutFormat));
 
       return TaskResult.defaultBuilder(request)
           .storeParams(storeParams)
@@ -158,6 +146,49 @@ public class ShResultOperatorFactory implements OperatorFactory {
       }
       env.put(name, variables.get(name));
     }
+  }
+
+  public static Object createVariableObjectFromStdout(
+      String stdoutData,
+      String stdoutFormat
+  ) {
+    // stdout is text
+    if ("text".equals(stdoutFormat)) {
+      return stdoutData;
+    }
+
+    // case of '*-delimited'
+    String delimiter = null;
+    if ("newline-delimited".equals(stdoutFormat)) {
+      delimiter = "\n";
+    } else if ("space-delimited".equals(stdoutFormat)) {
+      delimiter = "\n| ";
+    }
+    if (delimiter != null) {
+      List<String> listObj = new LinkedList<>();
+      for (String s : stdoutData.split(delimiter)) {
+        if (s.trim().length() > 0) {
+          listObj.add(s.trim());
+        }
+      }
+      return listObj;
+    }
+
+    if ("json-list-map".equals(stdoutFormat)) {
+      // stdout is json format
+      List<Map<String, Object>> jsonObj;
+      try {
+        ObjectMapper mapper = new ObjectMapper();
+        jsonObj = mapper
+            .readValue(stdoutData, new TypeReference<ArrayList<HashMap<String, Object>>>() {
+            });
+      } catch (IOException e) {
+        throw Throwables.propagate(e);
+      }
+      return jsonObj;
+
+    }
+    return null;
   }
 
   private static boolean isValidEnvKey(String key) {
