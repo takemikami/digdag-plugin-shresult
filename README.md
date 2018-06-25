@@ -21,7 +21,7 @@ _export:
     repositories:
       - https://jitpack.io
     dependencies:
-      - com.github.takemikami:digdag-plugin-shresult:0.0.1
+      - com.github.takemikami:digdag-plugin-shresult:0.0.2
 
 +step1:
   sh_result>: |
