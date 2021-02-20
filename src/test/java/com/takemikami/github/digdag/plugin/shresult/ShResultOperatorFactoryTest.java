@@ -62,47 +62,4 @@ public class ShResultOperatorFactoryTest {
     assertEquals("bar", obj.get(3));
   }
 
-  @Test
-  public void testCollectEnvironmentVariablesSuccess() throws Exception {
-    Map<String, String> env = new HashMap<>();
-    HashMap<String, String> map = new HashMap<>();
-    map.put("key", "value");
-    PrivilegedVariables variables = new TestPrivilegedVariables(map);
-    ShResultOperatorFactory.collectEnvironmentVariables(env, variables);
-    assertEquals("value", env.get("key"));
-  }
-
-  @Test(expected = ConfigException.class)
-  public void testCollectEnvironmentVariablesExceptionInvalidKey() throws Exception {
-    Map<String, String> env = new HashMap<>();
-    HashMap<String, String> map = new HashMap<>();
-    map.put("123", "value");
-    PrivilegedVariables variables = new TestPrivilegedVariables(map);
-    ShResultOperatorFactory.collectEnvironmentVariables(env, variables);
-  }
-
-  class TestPrivilegedVariables implements PrivilegedVariables {
-
-    private Map<String, String> map;
-
-    public TestPrivilegedVariables(Map<String, String> map) {
-      this.map = map;
-    }
-
-    @Override
-    public String get(String s) {
-      return map.get(s);
-    }
-
-    @Override
-    public Optional<String> getOptional(String s) {
-      return Optional.of(get(s));
-    }
-
-    @Override
-    public List<String> getKeys() {
-      return new ArrayList<String>(map.keySet());
-    }
-  }
-
 }
