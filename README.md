@@ -2,7 +2,6 @@
 
 [![JitPack](https://jitpack.io/v/takemikami/digdag-plugin-shresult.svg)](https://jitpack.io/#takemikami/digdag-plugin-shresult)
 [![Build Status](https://travis-ci.org/takemikami/digdag-plugin-shresult.svg?branch=master)](https://travis-ci.org/takemikami/digdag-plugin-shresult)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3e8669ca82e243ff977d05292ed89cc2)](https://www.codacy.com/app/takemikami/digdag-plugin-shresult?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=takemikami/digdag-plugin-shresult&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/takemikami/digdag-plugin-shresult/badge.svg?branch=master)](https://coveralls.io/github/takemikami/digdag-plugin-shresult?branch=master)
 
 digdag-plugin-shresult is plugin storing output of shell to digdag store.

@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'maven'
     id 'maven-publish'
+    id 'checkstyle'
+    id 'pmd'
     id 'jacoco'
     id 'com.github.kt3k.coveralls' version '2.8.2'
 }
@@ -68,9 +70,30 @@ javadoc {
     }
 }
 
+checkstyle {
+    toolVersion '8.40'
+}
+
+pmd {
+    toolVersion '6.31.0'
+    sourceSets = [sourceSets.main]
+    ruleSets = [
+            "category/java/bestpractices.xml",
+            "category/java/multithreading.xml",
+            "category/java/security.xml"
+    ]
+}
+
 jacocoTestReport {
     reports {
         xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled = false
         html.enabled = true
     }
 }

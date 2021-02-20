@@ -1,6 +1,6 @@
 name: Java CI
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Test
-        run: ./gradlew test
+        run: ./gradlew build
 
       - name: Report
         run: ./gradlew jacocoTestReport coveralls
