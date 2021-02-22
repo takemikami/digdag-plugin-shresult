@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.github.takemikami'
-version = '0.0.2'
+version = '0.0.3'
 
 def digdagVersion = '0.10.0'
 
