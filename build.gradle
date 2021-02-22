@@ -11,7 +11,7 @@ plugins {
 group = 'com.github.takemikami'
 version = '0.0.2'
 
-def digdagVersion = '0.9.25'
+def digdagVersion = '0.10.0'
 
 repositories {
     mavenCentral()
